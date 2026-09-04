@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Heist Game - Discord Activity</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        
+        <!-- Virtual D-Pad for Discord Mobile -->
+        <div id="virtual-dpad">
+            <button id="dpad-up" class="dpad-btn">▲</button>
+            <button id="dpad-down" class="dpad-btn">▼</button>
+            <button id="dpad-left" class="dpad-btn">◀</button>
+            <button id="dpad-right" class="dpad-btn">▶</button>
+        </div>
+        
+        <!-- Game UI -->
+        <div id="game-ui">
+            <div id="timer">Thời gian: 60s</div>
+            <div id="status">Trạng thái: Lén lút</div>
+            <div id="money" style="display: none;">Tiền: $0</div>
+        </div>
+        
+        <!-- Game Over Screen -->
+        <div id="game-over" style="display: none;">
+            <h2 id="game-over-title">Kết Thúc</h2>
+            <p id="game-over-message"></p>
+            <button id="restart-btn">Chơi Lại</button>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/assetLoader.js"></script>
+    <script src="js/mapLoader.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/camera.js"></script>
+    <script src="js/laser.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
