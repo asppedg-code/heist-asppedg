@@ -43,7 +43,7 @@ class Game {
         // Setup event listeners
         this.setupEventListeners();
         
-        // Initialize Discord integration
+        // Initialize Discord integration (non-blocking)
         this.initDiscordIntegration();
         
         // Initialize game
@@ -196,13 +196,18 @@ class Game {
     }
 
     initDiscordIntegration() {
-        // Initialize Discord SDK if available
+        // Initialize Discord SDK if available (non-blocking)
         if (window.DiscordIntegration) {
             window.DiscordIntegration.init().then(sdk => {
                 if (sdk) {
                     console.log("Discord SDK initialized in game");
                     this.discordSdk = sdk;
+                } else {
+                    console.log("Discord SDK not available, game continues normally");
                 }
+            }).catch(error => {
+                console.error("Discord integration error:", error);
+                console.log("Game continues without Discord integration");
             });
         } else {
             console.log("Discord integration not available");
@@ -347,10 +352,6 @@ class Game {
         if (window.DiscordIntegration) {
             window.DiscordIntegration.setPresence("Đang trốn thoát với tiền!");
         }
-        
-        // Update money display immediately
-        this.updateMoneyDisplay();
-    }
         
         // Update money display immediately
         this.updateMoneyDisplay();
