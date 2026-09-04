@@ -16,6 +16,9 @@ class Game {
         this.vaultTime = 0;
         this.isInVault = false;
         
+        // Discord integration
+        this.discordSdk = null;
+        
         // Game objects
         this.player = null;
         this.mapLoader = null;
@@ -39,6 +42,9 @@ class Game {
         
         // Setup event listeners
         this.setupEventListeners();
+        
+        // Initialize Discord integration
+        this.initDiscordIntegration();
         
         // Initialize game
         this.init();
@@ -189,6 +195,20 @@ class Game {
         });
     }
 
+    initDiscordIntegration() {
+        // Initialize Discord SDK if available
+        if (window.DiscordIntegration) {
+            window.DiscordIntegration.init().then(sdk => {
+                if (sdk) {
+                    console.log("Discord SDK initialized in game");
+                    this.discordSdk = sdk;
+                }
+            });
+        } else {
+            console.log("Discord integration not available");
+        }
+    }
+
     gameLoop(currentTime = performance.now()) {
         if (!this.isRunning) return;
 
@@ -322,6 +342,15 @@ class Game {
         this.statusElement.textContent = 'Trạng thái: TẤN CÔNG!';
         this.statusElement.style.color = '#ff6b6b';
         this.moneyElement.style.display = 'block';
+        
+        // Update Discord presence
+        if (window.DiscordIntegration) {
+            window.DiscordIntegration.setPresence("Đang trốn thoát với tiền!");
+        }
+        
+        // Update money display immediately
+        this.updateMoneyDisplay();
+    }
         
         // Update money display immediately
         this.updateMoneyDisplay();
@@ -458,8 +487,18 @@ class Game {
         if (won && this.totalMoney > 0) {
             const formattedMoney = new Intl.NumberFormat('vi-VN').format(this.totalMoney);
             this.gameOverMessage.textContent = `${message} Số tiền: ${formattedMoney} đ`;
+            
+            // Update Discord presence on win
+            if (window.DiscordIntegration) {
+                window.DiscordIntegration.setPresence(`Đã trốn thoát với ${formattedMoney} đ!`);
+            }
         } else {
             this.gameOverMessage.textContent = message;
+            
+            // Update Discord presence on loss
+            if (window.DiscordIntegration) {
+                window.DiscordIntegration.setPresence("Đã bị bắt...");
+            }
         }
     }
 
